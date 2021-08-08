@@ -20,17 +20,7 @@ class AuthController extends BaseController
     {
         $users = User::all();
         return $this->sendResponse(UserResource::collection($users), 'Users retrieved successfully');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    } 
 
     /**
      * Store a newly created resource in storage.
@@ -38,26 +28,55 @@ class AuthController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $provider='default')
     {
-        $input = $request->all();
-   
+        // switch ($provider) {
+        //     case 'google':
+        //         $input['oauth_type'] = $provider;
+        //         break;
+            
+        //     case 'github':
+                
+        //         $input['oauth_type'] = $provider;
+        //         break;
+        
+        //     case 'linkedin':
+                
+        //         $input['oauth_type'] = $provider;
+        //         break;
+                        
+        //     default:
+            
+        //         $input = $request->all(); 
+        //         $validator = Validator::make($input, [
+        //             'email' => 'required', 
+        //             'password' => 'required', 
+        //         ]);
+                
+        //         if($validator->fails()){
+        //             return $this->sendError('Validation Error.', $validator->errors());       
+        //         }
+
+        //         $input['oauth_type'] = $provider;
+        //         $input['password'] = bcrypt($input['password']);
+        //         $user = User::create($input);
+        //         break;
+        // }
+            
+        $input = $request->all(); 
         $validator = Validator::make($input, [
-            'name' => 'nullable|max:25',
-            'email' => 'required|unique|email',
-            'oauth_id' => 'nullable|unique',
-            'oauth_type' => 'nullable',
-            'profile_photo_url' => 'nullable',
-            'password' => 'required',
-            'remember_token' => 'required',
-            'updated_at' => 'nullable|date'
+            'email' => 'required', 
+            'password' => 'required', 
         ]);
-   
+        
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
-   
+
+        $input['oauth_type'] = $provider;
+        $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+
    
         return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
@@ -68,21 +87,10 @@ class AuthController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        return $user;
+    } 
 
     /**
      * Update the specified resource in storage.
@@ -91,9 +99,9 @@ class AuthController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $user->update($request->all());
     }
 
     /**
@@ -102,8 +110,9 @@ class AuthController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    // public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
     }
 }
