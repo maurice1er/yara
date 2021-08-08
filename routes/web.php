@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthSocialite\GithubController;
-use App\Http\Controllers\AuthSocialite\GoogleController;
-use App\Http\Controllers\AuthSocialite\LinkedinController;
+use App\Http\Controllers\Auths\AuthController;
+use App\Http\Controllers\Auths\AuthSocialite\GithubController;
+use App\Http\Controllers\Auths\AuthSocialite\GoogleController;
+use App\Http\Controllers\Auths\AuthSocialite\LinkedinController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+
 
 Route::get('/auth/google/callback', [GoogleController::class, 'hangleGoogleCallback']);
 Route::get('/auth/google/redirect', [GoogleController::class, 'hangleGoogleRedirect']);

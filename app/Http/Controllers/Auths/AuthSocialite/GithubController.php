@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\AuthSocialite;
+namespace App\Http\Controllers\Auths\AuthSocialite;
 
-use App\Http\Controllers\API\BaseController;
+use App\Http\Controllers\Auths\BaseController;
 use App\Http\Resources\UserResource;
 use App\Models\User; 
 use Laravel\Socialite\Facades\Socialite;

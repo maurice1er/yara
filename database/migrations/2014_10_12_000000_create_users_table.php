@@ -20,9 +20,9 @@ class CreateUsersTable extends Migration
             
             $table->string('oauth_id')->unique()->nullable()->default(null);
             $table->string('oauth_type')->nullable()->default("default");
-            $table->string('profile_photo_url')->nullable()->default(null);
+            $table->text('profile_photo_url')->nullable()->default(null);
 
-            $table->string('api_token')->unique()->nullable()->default(null);
+            $table->text('api_token')->unique()->nullable()->default(null);
             
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *
