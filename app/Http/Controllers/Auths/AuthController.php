@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\Auths;
 
 use Illuminate\Http\Request; 
-use App\Http\Controllers\Auths\BaseController as AuthsBaseController;
 use App\Http\Resources\UserResource as UserResource;
+use App\Http\Controllers\BaseController as BaseController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
-class AuthController extends AuthsBaseController
+class AuthController extends BaseController
 { 
     /**
      * register a newly created resource in storage.

@@ -17,8 +17,9 @@ class CreateWorkspaceTable extends Migration
             $table->id(); 
             $table->string('name');
             $table->text('detail');
-            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            
+            // $table->foreignId('user_id')->constrained();
         });
     }
 
