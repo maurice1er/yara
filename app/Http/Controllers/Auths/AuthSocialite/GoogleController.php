@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Resources\UserResource;
 use App\Models\User; 
 use Laravel\Socialite\Facades\Socialite;
+use Spatie\Permission\Models\Role;
 
 class GoogleController extends BaseController
 {
@@ -75,6 +76,13 @@ class GoogleController extends BaseController
                     'profile_photo_url' => $input->avatar,
                     'password' => bcrypt('passer@123')
                 ]);
+                // Assign default rule to user
+                $role = Role::where('name','guest')->first();
+                if (empty($role)) {
+                    $role = Role::create(['name' => 'guest']);
+                }
+                $user->assignRole($role);
+
             } catch (\Exception $e) {
                 dd($e);
             }

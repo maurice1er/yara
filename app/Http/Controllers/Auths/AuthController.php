@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-
+use Spatie\Permission\Models\Role;
 
 class AuthController extends BaseController
 { 
@@ -36,6 +36,13 @@ class AuthController extends BaseController
         $input['oauth_type'] = $provider;
         $input['password'] = Hash::make($input['password']);
         $user = User::create($input);
+
+        // Assign default rule to user
+        $role = Role::where('name','guest')->first();
+        if (empty($role)) {
+            $role = Role::create(['name' => 'guest']);
+        }
+        $user->assignRole($role);
   
         return $this->sendResponse(new UserResource($user), 'User created successfully.');
     }
@@ -43,7 +50,7 @@ class AuthController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request)
@@ -61,6 +68,7 @@ class AuthController extends BaseController
         return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
     } 
 
+    // Logout method
     public function logout() {
         Session::flush();
         Auth::logout();
@@ -68,5 +76,5 @@ class AuthController extends BaseController
         return $this->sendResponse([], 'User logout successfully.');
     }
 
-    
+
 }

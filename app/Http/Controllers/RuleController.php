@@ -17,7 +17,8 @@ class RuleController extends BaseController
      */
     public function index()
     {
-        //
+        $roles = Role::all();
+        return $this->sendResponse($roles, 'Rules loaded successfully.');
     }
 
     /**
@@ -38,7 +39,7 @@ class RuleController extends BaseController
         }
         
         $role = Role::create($input); 
-        return $this->sendResponse(new RuleResource($role), 'Role created successfully.');
+        return $this->sendResponse(new RuleResource($role), 'Rule created successfully.');
     }
 
     /**
@@ -49,7 +50,13 @@ class RuleController extends BaseController
      */
     public function show($id)
     {
-        //
+        $role = Role::where('id',$id)->first(); 
+        
+        if(empty($role)){
+            return $this->sendError('Rule '.$id.' not found.');       
+        }
+        
+        return $this->sendResponse(new RuleResource($role), 'Rule loaded successfully.');
     }
 
     /**
@@ -61,7 +68,21 @@ class RuleController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $role = Role::where('id',$id)->first(); 
+        if(empty($role)){
+            return $this->sendError('Rule '.$id.' not found.');       
+        }
+
+        $input = $request->all(); 
+        $validator = Validator::make($input, [
+            'name' => 'required|unique:roles'    
+        ]);
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $role->update($input);
+        return $this->sendResponse(new RuleResource($role), 'Rule updated successfully.');
     }
 
     /**
@@ -72,6 +93,12 @@ class RuleController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        $role = Role::where('id',$id)->first(); 
+        if(empty($role)){
+            return $this->sendError('Rule '.$id.' not found.');       
+        }
+        $role->delete();
+        return $this->sendResponse([], 'Rule deleted successfully.');
     }
+    
 }

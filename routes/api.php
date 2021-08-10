@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auths\AuthController;
+use App\Http\Controllers\Components\WorkspaceController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RuleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +23,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/auth/register', [AuthController::class, 'register']);
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/logout', [AuthController::class, 'logout']);
+// Route::post('/auth/register', [AuthController::class, 'register']);
+// Route::post('/auth/login', [AuthController::class, 'login']);
+// Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+Route::apiResource('auth', AuthController::class);
 
 
-Route::post('/rule/create', [RuleController::class, 'store']);
+// Route : Rules & Permissions
+Route::apiResource('rule', RuleController::class);
+Route::apiResource('permission', PermissionController::class);
+
+// Route : Components
+Route::apiResource('workspace', WorkspaceController::class);

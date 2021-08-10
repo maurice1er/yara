@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PermissionResource;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 
-class PermissionController extends Controller
+class PermissionController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = Permission::all();
+        return $this->sendResponse($permissions, 'Permissions loaded successfully.');
+
     }
 
     /**
@@ -26,7 +29,17 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all(); 
+        $validator = Validator::make($input, [
+            'name' => 'required|unique:permissions'
+        ]);
+        
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+        
+        $permission = Permission::create($input); 
+        return $this->sendResponse(new PermissionResource($permission), 'Permission created successfully.');
     }
 
     /**
@@ -37,7 +50,13 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        //
+        $permission = Permission::where('id',$id)->first(); 
+        
+        if(empty($permission)){
+            return $this->sendError('Permission '.$id.' not found.');       
+        }
+        
+        return $this->sendResponse(new PermissionResource($permission), 'Permission loaded successfully.');
     }
 
     /**
@@ -49,7 +68,21 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $permission = Permission::where('id',$id)->first(); 
+        if(empty($permission)){
+            return $this->sendError('Permission '.$id.' not found.');       
+        }
+
+        $input = $request->all(); 
+        $validator = Validator::make($input, [
+            'name' => 'required|unique:permissions'    
+        ]);
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $permission->update($input);
+        return $this->sendResponse(new PermissionResource($permission), 'Permission updated successfully.');
     }
 
     /**
@@ -60,6 +93,11 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $permission = Permission::where('id',$id)->first(); 
+        if(empty($permission)){
+            return $this->sendError('Permission '.$id.' not found.');       
+        }
+        $permission->delete();
+        return $this->sendResponse([], 'Permission deleted successfully.');
     }
 }
