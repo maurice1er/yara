@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auths\AuthController;
+use App\Http\Controllers\Components\AlgorithmController;
+use App\Http\Controllers\Components\DataController;
 use App\Http\Controllers\Components\WorkspaceController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RuleController;
@@ -36,3 +38,5 @@ Route::apiResource('permission', PermissionController::class);
 
 // Route : Components
 Route::apiResource('workspace', WorkspaceController::class);
+Route::apiResource('data', DataController::class);
+Route::apiResource('algorithm', AlgorithmController::class);
