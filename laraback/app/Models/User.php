@@ -25,8 +25,8 @@ class User extends Authenticatable
         'email',
         'password',
         'oauth_id',
-        'oauth_type',
-        'api_token',
+        'oauth_provider',
+        'oauth_token',
         'profile_photo_url',
     ];
 

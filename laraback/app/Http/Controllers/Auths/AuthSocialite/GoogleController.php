@@ -71,11 +71,15 @@ class GoogleController extends BaseController
                     'name' => $input->name,
                     'email' => $input->email,
                     'oauth_id' => $input->id,
-                    'oauth_type' => $provider,
+                    'oauth_provider' => $provider,
                     'api_token' => $input->token,
                     'profile_photo_url' => $input->avatar,
                     'password' => bcrypt('passer@123')
                 ]);
+
+                // crate token
+                $accessToken = $user->createToken('authToken')->accessToken; 
+                
                 // Assign default rule to user
                 $role = Role::where('name','guest')->first();
                 if (empty($role)) {
@@ -87,7 +91,8 @@ class GoogleController extends BaseController
                 dd($e);
             }
 
-            return $this->sendResponse(new UserResource($user), 'User created successfully.');
+            return $this->sendResponse(['user' => new UserResource($user), 'token' => $accessToken], 'User created successfully.');
+            // return $this->sendResponse(new UserResource($user), 'User created successfully.');
 
         }
 

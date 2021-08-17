@@ -4,6 +4,7 @@ use App\Http\Controllers\Auths\AuthController;
 use App\Http\Controllers\Auths\AuthSocialite\GithubController;
 use App\Http\Controllers\Auths\AuthSocialite\GoogleController;
 use App\Http\Controllers\Auths\AuthSocialite\LinkedinController;
+// use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-
+// Auth::routes();
 
 Route::get('/auth/google/callback', [GoogleController::class, 'hangleGoogleCallback']);
 Route::get('/auth/google/redirect', [GoogleController::class, 'hangleGoogleRedirect']);
@@ -33,3 +34,4 @@ Route::get('/auth/github/redirect', [GithubController::class, 'hangleGithubRedir
 
 Route::get('/auth/linkedin/callback', [LinkedinController::class, 'hangleLinkedinCallback']);
 Route::get('/auth/linkedin/redirect', [LinkedinController::class, 'hangleLinkedinRedirect']);
+

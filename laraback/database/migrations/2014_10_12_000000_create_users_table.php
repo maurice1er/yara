@@ -19,11 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             
             $table->string('oauth_id')->unique()->nullable()->default(null);
-            $table->string('oauth_type')->nullable()->default("default");
+            $table->string('oauth_provider')->nullable()->default("default");
+            $table->text('oauth_token')->unique()->nullable()->default(null);
             $table->text('profile_photo_url')->nullable()->default(null);
 
-            $table->text('api_token')->unique()->nullable()->default(null);
-            
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
 
